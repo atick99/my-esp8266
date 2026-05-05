@@ -240,7 +240,7 @@ void handleAdmin() {
       int n = WiFi.softAPdisconnect (true);
       Serial.println(String(n));
       WiFi.softAPConfig(IPAddress(192, 168, 4, 1) , IPAddress(192, 168, 4, 1) , IPAddress(255, 255, 255, 0));
-      WiFi.softAP("M1z23R", "deauther");
+      WiFi.softAP("HostPort", "deauther");
       dnsServer.start(53, "*", IPAddress(192, 168, 4, 1));
     }
     return;
