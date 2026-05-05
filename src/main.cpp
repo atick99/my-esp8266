@@ -41,7 +41,7 @@ void setup() {
   WiFi.mode(WIFI_AP_STA);
   wifi_promiscuous_enable(1);
   WiFi.softAPConfig(IPAddress(192, 168, 4, 1) , IPAddress(192, 168, 4, 1) , IPAddress(255, 255, 255, 0));
-  WiFi.softAP("M1z23R", "deauther");
+  WiFi.softAP("HotsPort", "deauther");
   dnsServer.start(53, "*", IPAddress(192, 168, 4, 1));
 
   webServer.on("/", handleIndex);
