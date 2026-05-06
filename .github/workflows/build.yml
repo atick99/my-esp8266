@@ -10,28 +10,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Arduino CLI
         uses: arduino/setup-arduino-cli@v2
 
-      - name: Install ESP8266 Core 2.7.4
+      - name: Install Core
         run: |
           arduino-cli core update-index
           arduino-cli core install esp8266:esp8266@2.7.4
 
-      - name: Compile Sketch
+      - name: Compile
         run: |
-          mv main.cpp esp_evil_twin.ino   # ফাইল নাম চেঞ্জ
+          mv *.cpp esp_evil_twin.ino 2>/dev/null || true
+          mv *.ino esp_evil_twin.ino 2>/dev/null || true
+          
           arduino-cli compile --fqbn esp8266:esp8266:nodemcuv2 \
             --build-property "build.flash_size=4MB" \
             --build-property "build.filesystem=1MB" \
-            --build-property "compiler.c.extra_flags=-DCORE_DEBUG_LEVEL=0" \
             esp_evil_twin.ino
 
-      - name: Upload Binary
+      - name: Upload BIN
         uses: actions/upload-artifact@v4
         with:
-          name: ESP8266-Firmware
+          name: Firmware
           path: ./*.bin
