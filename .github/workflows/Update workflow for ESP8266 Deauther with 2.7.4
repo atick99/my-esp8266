@@ -1,0 +1,34 @@
+name: ESP8266 Deauther Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+
+      - name: Update Index & Install ESP8266 Core 2.7.4
+        run: |
+          # Additional index update
+          arduino-cli core update-index --additional-urls https://arduino.esp8266.com/stable/package_esp8266com_index.json
+          
+          # Download and install old 2.7.4 version manually
+          wget https://github.com/esp8266/Arduino/releases/download/2.7.4/esp8266-2.7.4.zip -O esp8266-2.7.4.zip
+          arduino-cli core install --zip-path esp8266-2.7.4.zip
+
+      - name: Compile Deauther
+        run: |
+          # আপনার main sketch ফাইলের নাম অনুযায়ী পরিবর্তন করো (যেমন: esp8266_deauther.ino)
+          arduino-cli compile --fqbn esp8266:esp8266:generic \
+                              --board-options "xtal=80,FlashMode=qio,FlashFreq=40,FlashSize=4M,ResetMethod=nodtr" \
+                              ./*.ino
